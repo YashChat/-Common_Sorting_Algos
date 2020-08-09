@@ -48,13 +48,16 @@ public class Part3 {
         array = a;
         compares = 0;
         swaps = 0;
-        for (int i = 1; i < a.length; i++) {
-            int j = i - 1;
-            while (less(i, j) == true && j > 0) {
-                swap(j, j + 1);
-                j--;
-            }
 
+        for (int i = 1; i < a.length; i++) {
+            int j = i;
+            while ((less(j, j - 1) == true) && (j - 1) >= 0) {
+                swap(j - 1, j);
+                j--;
+                if ((j - 1) < 0) {
+                    break;
+                }
+            }
         }
         return new int[]{compares, swaps};
     } //insertionSort
@@ -70,8 +73,6 @@ public class Part3 {
             m--;
             foo2(0, m);
         }
-        System.out.println("Compares mystery = " + compares);
-        System.out.println("Swaps mystery = " + swaps);
         return new int[] {compares, swaps};
     } // mysterySort()
 
@@ -86,23 +87,38 @@ public class Part3 {
                 return ((2*k) + 1);
             }
         }
-        else if (less(k, (2*k) + 1) || less(k, (2 * k) + 2)) {
-            if (less(2 * k + 1, 2 * k + 2 )) {
-                max = (2 * k + 2);
+        else if (((2*k) + 1 < m) && ((2*k) + 2 < m)) {
+            if (less(k, (2*k) + 1) || less(k, (2 * k) + 2)) {
+
+                if (array[(2*k) + 1] == array[(2*k) + 2]) {
+                    swap(k, (2*k) + 1);
+                    return ((2*k) + 1);
+                }
+                if (less(2 * k + 1, 2 * k + 2 )) {
+                    max = (2 * k + 2);
+                }
+                else if (less(2 * k + 2, 2 * k + 1 )){
+                   max = (2 * k + 1);
+                }
+                swap(k, max);
+                return max;
             }
-            else {
-                max = (2 * k + 1);
-            }
-            swap(k, max);
-            return max;
         }
-        return 0;
+        return k;
     } // foo1()
 
     public static void foo2(int k, int m) {
         int new_k = foo1(k, m);
-        while ((2*new_k + 1) < m) {
+        int temp_k = 0;
+        while (new_k != k) {
+            temp_k = new_k;
+            if ((2*new_k+1 > m) || (2*new_k+1 > m)) {
+                return;
+            }
             new_k = foo1(new_k, m);
+            if (temp_k == new_k) {
+                return;
+            }
         }
     } // foo2()
 
@@ -117,7 +133,7 @@ public class Part3 {
     //NOTE: You can use !less for >=
     private static boolean less(int i, int j) {
         compares++;
-        if(array[i] < array[j])
+        if (array[i] < array[j])
             return true;
         return false;
     }
