@@ -1,4 +1,4 @@
-# -Common_Sorting_Algos
+# Common-Sorting-Algos
 
 This file has all the the common sorting algorithms.
 
